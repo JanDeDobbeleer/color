@@ -86,9 +86,15 @@ func tryEnableOnCONOUT() bool {
 	}
 
 	err = EnableVirtualTerminalProcessing(outHandle, true)
+	if err == nil {
+		return true
+	}
+	saveInternalError(err)
+	err = EnableVirtualTerminalProcessing(syscall.Stdout, true)
 	if err != nil {
 		saveInternalError(err)
-		return false
+		fmt.Println(96, err)
+		// isSupportColor = false
 	}
 
 	return true
