@@ -58,10 +58,15 @@ func init() {
 
 	// enable colors on windows terminal
 	err = EnableVirtualTerminalProcessing(outHandle, true)
+	if err == nil {
+		return
+	}
+	saveInternalError(err)
+	err = EnableVirtualTerminalProcessing(syscall.Stdout, true)
 	if err != nil {
-		fmt.Println("Enable colors error:", err)
 		saveInternalError(err)
-		supportColor = false
+		fmt.Println(64, err)
+		// isSupportColor = false
 	}
 
 	// NOTICE: update var `supportColor` to TRUE.
